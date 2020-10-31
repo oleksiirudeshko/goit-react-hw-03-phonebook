@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Section from './Section';
-import ContactList from './ContactList';
-import ContactEditor from './ContactEditor';
-import Filter from './Filter';
+import Section from "./Section";
+import ContactList from "./ContactList";
+import ContactEditor from "./ContactEditor";
+import Filter from "./Filter";
 
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export default class App extends Component {
   state = {
     contacts: [],
-    filter: '',
+    filter: "",
   };
 
   componentDidMount() {
-    const savedContacts = localStorage.getItem('contacts');
+    const savedContacts = localStorage.getItem("contacts");
     if (savedContacts) {
       this.setState({
         contacts: JSON.parse(savedContacts),
@@ -24,42 +24,44 @@ export default class App extends Component {
 
   componentDidUpdate(prevState) {
     if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
     }
   }
 
   addContact = ({ name, number }) => {
     const contact = {
       id: uuidv4(),
-      name: name,
-      number: number,
+      name,
+      number,
     };
 
-    const UnicName = this.state.contacts.find(contact => contact.name === name);
+    const UnicName = this.state.contacts.find(
+      (contact) => contact.name === name
+    );
     if (UnicName) {
       alert(`${name} is already in contacts!!!`);
     } else {
-      this.setState(prevState => {
+      this.setState((prevState) => {
         return { contacts: [...prevState.contacts, contact] };
       });
     }
   };
 
-  removeContact = contactId => {
-    this.setState(prevState => {
+  removeContact = (contactId) => {
+    this.setState((prevState) => {
       return {
         contacts: prevState.contacts.filter(({ id }) => id !== contactId),
       };
     });
   };
 
-  changeFilter = filter => {
+  changeFilter = (filter) => {
     this.setState({ filter });
   };
   getFilterName = () => {
     const { contacts, filter } = this.state;
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase()),
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
